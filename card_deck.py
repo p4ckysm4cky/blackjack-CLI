@@ -1,3 +1,5 @@
+from random import shuffle
+
 class Card:
     def __init__(self, rank, suit):
         self.rank = rank
@@ -54,21 +56,39 @@ class Deck:
     def __init__(self):
         self.cards = []
 
+
+    def get_cards(self):
+        return self.cards
+
+
     def generate_standard(self):
         ranks = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
         suits = ("D", "C", "H", "S")
         for rank in ranks:
             for suit in suits:
                 self.cards.append(Card(rank, suit))
+    
+    
+    def shuffle(self):
+        shuffle(self.cards)
+
+
 
 if __name__ == "__main__":
     # for row in Card("A", "S").ascii():
     #     print(row)
     a_deck = Deck()
     a_deck.generate_standard()
-    for card in a_deck.cards:
-        for row in card.ascii():
-            print(row)
-        print()
+    for j in range(52 - 3):
+        for i in range(7):
+            print(a_deck.cards[j].ascii()[i], a_deck.cards[j+1].ascii()[i], a_deck.cards[j+2].ascii()[i], a_deck.cards[j+3].ascii()[i])
+    
+    if input("Shuffle? ") == "y":
+        a_deck.shuffle()
+
+    for j in range(52 - 3):
+        for i in range(7):
+            print(a_deck.cards[j].ascii()[i], a_deck.cards[j+1].ascii()[i], a_deck.cards[j+2].ascii()[i], a_deck.cards[j+3].ascii()[i])
+    
 
 
