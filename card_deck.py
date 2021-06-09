@@ -79,9 +79,11 @@ if __name__ == "__main__":
     #     print(row)
     a_deck = Deck()
     a_deck.generate_standard()
-    for j in range(52 - 3):
+    j = 0
+    while j < (52 -3 ):
         for i in range(7):
             print(a_deck.cards[j].ascii()[i], a_deck.cards[j+1].ascii()[i], a_deck.cards[j+2].ascii()[i], a_deck.cards[j+3].ascii()[i])
+        j += 4
     
     if input("Shuffle? ") == "y":
         a_deck.shuffle()
