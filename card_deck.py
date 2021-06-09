@@ -19,8 +19,22 @@ class Card:
         return card_ascii
 
 
+    def ascii_hidden(self):
+        card_ascii = [
+            '┌───────┐',
+            '|░░░░░░░|',
+            '|░░░░░░░|',
+            '|░░░░░░░|',
+            '|░░░░░░░|',
+            '|░░░░░░░|',
+            '└───────┘'
+        ]
+        return card_ascii
+
+
+
 if __name__ == "__main__":
-    for row in Card(1, 2).ascii():
+    for row in Card(1, 2).ascii_hidden():
         print(row)
 
 
