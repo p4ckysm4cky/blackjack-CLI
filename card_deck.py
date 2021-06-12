@@ -68,6 +68,7 @@ class Deck:
             for suit in suits:
                 self.cards.append(Card(rank, suit))
 
+
     def add_card(self, rank, suit):
         for card in self.cards:
             if rank == card.rank and suit == card.suit:
@@ -76,6 +77,13 @@ class Deck:
         self.cards.append(Card(rank, suit))
     
     
+    def draw_card(self):
+        try:
+            self.cards.pop()
+        except IndexError:
+            print("You cannot draw a card from an empty deck")
+
+
     def shuffle(self):
         shuffle(self.cards)
 
@@ -101,8 +109,7 @@ if __name__ == "__main__":
 
     # display_card()
     a_deck = Deck()
-    a_deck.generate_standard()
-    a_deck.add_card("A", "J")
+    a_deck.draw_card()
     
 
 
