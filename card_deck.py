@@ -67,6 +67,13 @@ class Deck:
         for rank in ranks:
             for suit in suits:
                 self.cards.append(Card(rank, suit))
+
+    def add_card(self, rank, suit):
+        for card in self.cards:
+            if rank == card.rank and suit == card.suit:
+                print("The card is already in the deck")
+                break
+        self.cards.append(Card(rank, suit))
     
     
     def shuffle(self):
@@ -77,22 +84,25 @@ class Deck:
 if __name__ == "__main__":
     # for row in Card("A", "S").ascii():
     #     print(row)
+    # a_deck = Deck()
+    # a_deck.generate_standard()
+    
+    # def display_card():
+    #     j = 0
+    #     while j < (52 -3 ):
+    #         for i in range(7):
+    #             print(a_deck.cards[j].ascii()[i], a_deck.cards[j+1].ascii()[i], a_deck.cards[j+2].ascii()[i], a_deck.cards[j+3].ascii()[i])
+    #         j += 4
+    
+    # display_card()
+    
+    # if input("Shuffle? ") == "y":
+    #     a_deck.shuffle()
+
+    # display_card()
     a_deck = Deck()
     a_deck.generate_standard()
-    
-    def display_card():
-        j = 0
-        while j < (52 -3 ):
-            for i in range(7):
-                print(a_deck.cards[j].ascii()[i], a_deck.cards[j+1].ascii()[i], a_deck.cards[j+2].ascii()[i], a_deck.cards[j+3].ascii()[i])
-            j += 4
-    
-    display_card()
-    
-    if input("Shuffle? ") == "y":
-        a_deck.shuffle()
-
-    display_card()
+    a_deck.add_card("A", "J")
     
 
 
