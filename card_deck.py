@@ -88,15 +88,21 @@ class Deck:
         shuffle(self.cards)
 
     
-    def display_vertical(self):
-        display_list = [card.ascii() for card in self.cards]
+    def display_vertical(self, hidden=False):
+        if hidden == False:
+            display_list = [card.ascii() for card in self.cards]
+        else:
+            display_list = [card.ascii_hidden() for card in self.cards]
         for card in display_list:
             for row in card:
                 print(row)
 
 
-    def display_horizontal(self):
-        display_list = [card.ascii() for card in self.cards]
+    def display_horizontal(self, hidden=False):
+        if hidden == False:
+            display_list = [card.ascii() for card in self.cards]
+        else:
+            display_list = [card.ascii_hidden() for card in self.cards]
         ASCII_ROW = 7
         for i in range(ASCII_ROW):
             for card in display_list:
@@ -123,12 +129,18 @@ if __name__ == "__main__":
 
     # display_card()
     a_deck = Deck()
-    a_deck.add_card("10", "A")
-    a_deck.add_card("9", "A")
-    a_deck.add_card("8", "A")
-    a_deck.add_card("7", "A")
-    a_deck.add_card("6", "A")
+    a_deck.add_card("10", "D")
+    a_deck.add_card("9", "S")
+    a_deck.add_card("8", "D")
+    a_deck.add_card("7", "D")
+    a_deck.add_card("6", "C")
     a_deck.display_horizontal()
+    a_deck.draw_card()
+    a_deck.display_horizontal()
+    a_deck.draw_card()
+    a_deck.display_horizontal()
+    a_deck.add_card("K", "S")
+    a_deck.display_horizontal(True)
     
 
 
