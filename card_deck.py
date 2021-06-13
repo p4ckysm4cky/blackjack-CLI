@@ -1,9 +1,14 @@
 from random import shuffle
 
 class Card:
-    def __init__(self, rank, suit):
+    def __init__(self, rank, suit, hidden=False):
         self.rank = rank
         self.suit = suit
+        self.hidden = hidden
+
+
+    def set_hidden(self, bool):
+        self.hidden = bool
 
     
     def __str__(self):
@@ -27,20 +32,18 @@ class Card:
         else:
             ascii_rank = self.rank
 
-        card_ascii = [
-            '┌───────┐',
-            f'|{ascii_rank}     |',
-            '|       |',
-            f'|   {ascii_suit}   |',
-            '|       |',
-            f'|     {ascii_rank}|',
-            '└───────┘'
-        ]
-        return card_ascii
-
-
-    def ascii_hidden(self):
-        card_ascii = [
+        if not self.hidden:
+            card_ascii = [
+                '┌───────┐',
+                f'|{ascii_rank}     |',
+                '|       |',
+                f'|   {ascii_suit}   |',
+                '|       |',
+                f'|     {ascii_rank}|',
+                '└───────┘'
+            ]
+        else:
+            card_ascii = [
             '┌───────┐',
             '|░░░░░░░|',
             '|░░░░░░░|',
@@ -49,7 +52,10 @@ class Card:
             '|░░░░░░░|',
             '└───────┘'
         ]
+
         return card_ascii
+
+
 
 
 class Deck:
@@ -69,12 +75,12 @@ class Deck:
                 self.cards.append(Card(rank, suit))
 
 
-    def add_card(self, rank, suit):
+    def add_card(self, rank, suit, hidden=False):
         for card in self.cards:
             if rank == card.rank and suit == card.suit:
                 print("The card is already in the deck")
                 break
-        self.cards.append(Card(rank, suit))
+        self.cards.append(Card(rank, suit, hidden))
     
     
     def draw_card(self):
@@ -88,26 +94,25 @@ class Deck:
         shuffle(self.cards)
 
     
-    def display_vertical(self, hidden=False):
-        if hidden == False:
-            display_list = [card.ascii() for card in self.cards]
-        else:
-            display_list = [card.ascii_hidden() for card in self.cards]
+    def display_vertical(self):
+        display_list = [card.ascii() for card in self.cards]
         for card in display_list:
             for row in card:
                 print(row)
 
 
-    def display_horizontal(self, hidden=False):
-        if hidden == False:
-            display_list = [card.ascii() for card in self.cards]
-        else:
-            display_list = [card.ascii_hidden() for card in self.cards]
+    def display_horizontal(self):
+        display_list = [card.ascii() for card in self.cards]
         ASCII_ROW = 7
         for i in range(ASCII_ROW):
             for card in display_list:
                 print(card[i], end =" ")
             print()
+
+
+    def hide_card(self, index, hidden):
+        self.cards[index].set_hidden(hidden)
+
 
 if __name__ == "__main__":
     # for row in Card("A", "S").ascii():
@@ -129,18 +134,13 @@ if __name__ == "__main__":
 
     # display_card()
     a_deck = Deck()
+    a_deck.add_card("J", "S", True)
+    a_deck.display_horizontal()
     a_deck.add_card("10", "D")
-    a_deck.add_card("9", "S")
-    a_deck.add_card("8", "D")
-    a_deck.add_card("7", "D")
-    a_deck.add_card("6", "C")
     a_deck.display_horizontal()
-    a_deck.draw_card()
+    a_deck.hide_card(0, False)
     a_deck.display_horizontal()
-    a_deck.draw_card()
-    a_deck.display_horizontal()
-    a_deck.add_card("K", "S")
-    a_deck.display_horizontal(True)
+
     
 
 
