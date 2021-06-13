@@ -6,10 +6,20 @@ class Player():
         self.is_dealer = is_dealer
         self.score = 0
         self.money = 1000
+        self.ace_count = 0
 
     
-    def hit(self, a_card):
+    def add_card(self, a_card):
         self.deck.add_card(a_card.rank, a_card.suit)
+
+    
+    def reset_score(self):
+        self.score = 0
+
+    
+
+
+    
 
 
 if __name__ == "__main__":
