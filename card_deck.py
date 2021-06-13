@@ -85,7 +85,7 @@ class Deck:
     
     def draw_card(self):
         try:
-            self.cards.pop()
+            return self.cards.pop()
         except IndexError:
             print("You cannot draw a card from an empty deck")
 
@@ -139,6 +139,10 @@ if __name__ == "__main__":
     a_deck.add_card("10", "D")
     a_deck.display_horizontal()
     a_deck.hide_card(0, False)
+    a_deck.display_horizontal()
+    a_deck.add_card("3", "D")
+    a_deck.display_horizontal()
+    a_deck.hide_card(2, True)
     a_deck.display_horizontal()
 
     
