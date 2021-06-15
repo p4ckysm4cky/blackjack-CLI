@@ -14,6 +14,9 @@ class Card:
     def __str__(self):
         return f"{self.rank}{self.suit}"
 
+    def get_rank(self):
+        return self.rank
+
 
     def ascii(self):
         if self.suit == "S":
@@ -61,6 +64,9 @@ class Card:
 class Deck:
     def __init__(self):
         self.cards = []
+
+    def deck_length(self):
+        return len(self.cards)
 
 
     def get_cards(self):
