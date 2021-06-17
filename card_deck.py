@@ -68,6 +68,11 @@ class Deck:
     def deck_length(self):
         return len(self.cards)
 
+    def reset_deck(self):
+        temp = self.cards
+        self.cards = []
+        return temp
+
 
     def get_cards(self):
         return self.cards
