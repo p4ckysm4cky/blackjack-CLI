@@ -16,6 +16,9 @@ class Player():
     def hit(self, a_card, hidden=False):
         self.deck.add_card(a_card.rank, a_card.suit, hidden)
 
+    def get_deck(self):
+        return self.deck
+
 
     def get_money(self):
         return self.money
@@ -25,6 +28,8 @@ class Player():
         while True:
             bet = int(input("Please enter how much you wish to bet: "))
             if bet <= self.money:
+                self.bet += bet
+                self.money -= bet
                 return bet 
             else:
                 print("The bet you entered is more than the amount you have")
@@ -104,7 +109,23 @@ class Blackjack():
 
     
     def main(self):
-        pass
+        self.start()
+        blackjack_deck = Deck()
+        blackjack_deck.generate_standard()
+        blackjack_deck.shuffle()
+
+        for i in range(1, self.rounds + 1):
+            print("="*30)
+            print(f"Round {i}")
+            print(f"Current balance: {self.player.get_money()}")
+            bet_amount = self.bet_input()
+            self.initial_deal(blackjack_deck)
+            self.dealer.get_deck().display_horizontal()
+            print("-"*30)
+            self.player.get_deck().display_horizontal()
+
+            return
+
 
 
     
@@ -114,13 +135,9 @@ class Blackjack():
 
 
 if __name__ == "__main__":
-    standard_deck = Deck()
-    standard_deck.generate_standard()
+
     a = Blackjack(5)
-    a.initial_deal(standard_deck)
-    
-    a.dealer.deck.display_horizontal()
-    a.player.deck.display_horizontal()
+    a.main()
 
 
 
