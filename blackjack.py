@@ -16,6 +16,9 @@ class Player():
     def hit(self, a_card, hidden=False):
         self.deck.add_card(a_card.rank, a_card.suit, hidden)
 
+    def reset_bet(self):
+        self.bet = 0
+
     def get_deck(self):
         return self.deck
 
@@ -177,22 +180,13 @@ class Blackjack():
                 print("Invalid input")
                 sleep(0.5)
 
-        
-        
-
-        
-
-
-
-
-            
-
 
 
     # If I have time I might clean this up and break it into separate functions / methods
     def main(self):
         self.start()
         blackjack_deck = Deck()
+        original_amount = self.player.get_money
         blackjack_deck.generate_standard()
         blackjack_deck.shuffle()
 
@@ -265,13 +259,10 @@ class Blackjack():
 
 
             # reset the round
-
-                
-        
-
-
-
-
+            self.player.reset_bet()
+            bet_amount = 0
+            self.player.get_deck().reset_deck()
+            self.dealer.get_deck().reset_deck()
 
         return
 
