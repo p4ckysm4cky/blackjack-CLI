@@ -45,6 +45,10 @@ class Player():
 
     
     def get_score(self):
+        # reset the score for every count
+        self.score = 0
+        # reset ace count for every count
+        self.ace_count = 0
         for card in self.deck.get_cards():
             if card.get_rank().isdigit():
                 self.score += int(card.get_rank())
@@ -114,7 +118,14 @@ class Blackjack():
     def card_split(self):
         pass
 
+
+    def card_double(self):
+        pass
+
     def display_current(self):
+        """
+        Displays current cards of dealer and player
+        """
         self.dealer.get_deck().display_horizontal()
         print("-"*30)
         self.player.get_deck().display_horizontal()
@@ -122,15 +133,20 @@ class Blackjack():
 
 
     def available_options(self, bet_amount, is_first_time=False):
+        """
+        Basically it displays the available options the user can choose, and returns it if it allowed to
+        """
         options = ["hit", "stand"]
         if self.player.get_score() == 21 and is_first_time:
             self.natural_blackjack()
-            return 
+            return "natural_blackjack"
         else:
             if is_first_time and self.player.get_money() >= bet_amount:
+                # you can only double during your first move
                 options.append("double")
 
             if self.player.get_deck().get_cards()[0].get_rank() == self.player.get_deck().get_cards()[1].get_rank() and is_first_time and self.player.get_money() >= bet_amount:
+                # split is available if same rank, and first move
                 options.append("split")
             
             # Probably in future iterations add insurance and etc to the options
@@ -143,7 +159,7 @@ class Blackjack():
             try:
                 user_input = input("Input your choice: ").lower()
                 if user_input in options:
-                    break
+                    return user_input
                 else:
                     print("Invalid input")
                     sleep(0.5)
@@ -177,7 +193,30 @@ class Blackjack():
             bet_amount = self.bet_input()
             self.initial_deal(blackjack_deck)
             self.display_current()
-            self.available_options(bet_amount, True)
+            user_input = self.available_options(bet_amount, is_first_time=True)
+            while True:
+                if user_input == "hit":
+                    self.player.hit(blackjack_deck.draw_card())
+                elif user_input == "stand":
+                    break
+                elif user_input == "split":
+                    self.card_split()
+                elif user_input == "double":
+                    self.card_double()
+                else:
+                    break
+                if self.player.get_score() > 21:
+                    # this needs to do something though
+                    self.display_current()
+                    print("Game over")
+                    break
+                
+    
+                self.display_current()
+                user_input = self.available_options(bet_amount, is_first_time=False)
+
+
+
 
             return
 
