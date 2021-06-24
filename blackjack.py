@@ -94,6 +94,7 @@ class Blackjack():
                       |__/                 
                       """)
     
+
     def bet_input(self):
         while True:
             try: 
@@ -111,6 +112,7 @@ class Blackjack():
         self.player.hit(standard_deck.draw_card())
         self.dealer.hit(standard_deck.draw_card(), hidden=True)
 
+
     def natural_blackjack(self):
         pass
 
@@ -122,6 +124,7 @@ class Blackjack():
     def card_double(self):
         pass
 
+
     def display_current(self):
         """
         Displays current cards of dealer and player
@@ -129,7 +132,14 @@ class Blackjack():
         self.dealer.get_deck().display_horizontal()
         print("-"*30)
         self.player.get_deck().display_horizontal()
-        print(f"Score: {self.player.get_score()}")
+        print(f"Player score: {self.player.get_score()}")
+        if self.player.get_score() > 21:
+            print("Bust!")
+
+    
+    def dealer_draw(self, blackjack_deck):
+        while self.dealer.get_score() < 17:
+            self.dealer.hit(blackjack_deck.draw_card())
 
 
     def available_options(self, bet_amount, is_first_time=False):
@@ -179,17 +189,21 @@ class Blackjack():
 
 
 
-    
+    # If I have time I might clean this up and break it into separate functions / methods
     def main(self):
         self.start()
         blackjack_deck = Deck()
         blackjack_deck.generate_standard()
         blackjack_deck.shuffle()
 
-        for i in range(1, self.rounds + 1):
+        for i in range(1, self.rounds + 1):            
+            is_player_not_bust = True # used to check if the dealer needs to draw cards
+            natural_blackjack = False
+            
             print("="*30)
+            print(f"Card count: {blackjack_deck.deck_length()}")
             print(f"Round {i}")
-            print(f"Current balance: {self.player.get_money()}")
+            print(f"Current balance: ${self.player.get_money()}")
             bet_amount = self.bet_input()
             self.initial_deal(blackjack_deck)
             self.display_current()
@@ -203,22 +217,63 @@ class Blackjack():
                     self.card_split()
                 elif user_input == "double":
                     self.card_double()
+                    break
                 else:
                     break
+
+                # After every selection it checks if the player has bust or not
                 if self.player.get_score() > 21:
                     # this needs to do something though
-                    self.display_current()
-                    print("Game over")
+                    is_player_not_bust = False
                     break
                 
-    
                 self.display_current()
                 user_input = self.available_options(bet_amount, is_first_time=False)
+            
+            self.dealer.get_deck().hide_card(1, False)
+            if is_player_not_bust:
+                if self.dealer.get_score() < 17:
+                    print("Dealer is drawing cards...")
+                    self.dealer_draw(blackjack_deck)
+                    sleep(0.5)
+
+
+
+                print(f"Dealer score: {self.dealer.get_score()}")
+                self.display_current()
+                if self.dealer.get_score() > 21:
+                    print("The dealer has bust")
+                    print(f"You received {bet_amount * 2}")
+                    self.player.add_money(bet_amount * 2)
+
+                elif self.player.get_score() ==  self.dealer.get_score(): 
+                    print("Push!")
+                    print(f"You received {bet_amount} back")
+                    self.player.add_money(bet_amount)
+                
+                elif self.player.get_score() > self.dealer.get_score():
+                    print(f"You received {bet_amount * 2}")
+                    self.player.add_money(bet_amount * 2)
+
+                elif self.player.get_score() < self.dealer.get_score():
+                    print("The dealer has a higher score")
+                    print(f"You lost ${self.player.bet}")
+
+            elif not is_player_not_bust:
+                self.display_current()
+                print(f"You lost ${self.player.bet}")
+
+
+            # reset the round
+
+                
+        
 
 
 
 
-            return
+
+        return
 
 
 
