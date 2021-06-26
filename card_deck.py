@@ -4,7 +4,7 @@ class Card:
     def __init__(self, rank, suit, hidden=False):
         self.rank = rank
         self.suit = suit
-        self.hidden = hidden
+        self.hidden = hidden # this determines if the card is flipped over or not
 
 
     def set_hidden(self, bool):
@@ -19,6 +19,9 @@ class Card:
 
 
     def ascii(self):
+        """
+        returns a list of strings that can be used to display a card
+        """
         if self.suit == "S":
             ascii_suit = "♠"
         elif self.suit == "H":
@@ -79,6 +82,9 @@ class Deck:
 
 
     def generate_standard(self):
+        """
+        Generates a standard deck of 52 cards that are not shuffled
+        """
         ranks = ("A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K")
         suits = ("D", "C", "H", "S")
         for rank in ranks:
@@ -106,6 +112,9 @@ class Deck:
 
     
     def display_vertical(self):
+        """
+        prints a deck of cards vertically down the console
+        """
         display_list = [card.ascii() for card in self.cards]
         for card in display_list:
             for row in card:
@@ -113,6 +122,9 @@ class Deck:
 
 
     def display_horizontal(self):
+        """
+        prints a deck of cards vertically across the console
+        """
         display_list = [card.ascii() for card in self.cards]
         ASCII_ROW = 7
         for i in range(ASCII_ROW):
@@ -125,6 +137,7 @@ class Deck:
         self.cards[index].set_hidden(hidden)
 
 
+# ignore below - used for testing only
 if __name__ == "__main__":
     # for row in Card("A", "S").ascii():
     #     print(row)
@@ -145,16 +158,10 @@ if __name__ == "__main__":
 
     # display_card()
     a_deck = Deck()
-    a_deck.add_card("J", "S", True)
-    a_deck.display_horizontal()
-    a_deck.add_card("10", "D")
-    a_deck.display_horizontal()
-    a_deck.hide_card(0, False)
-    a_deck.display_horizontal()
-    a_deck.add_card("3", "D")
-    a_deck.display_horizontal()
-    a_deck.hide_card(2, True)
-    a_deck.display_horizontal()
+    a_deck.generate_standard()
+    a_deck.shuffle()
+    a_deck.display_vertical()
+
 
     
 

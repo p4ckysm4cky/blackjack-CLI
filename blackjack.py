@@ -17,6 +17,9 @@ class Player():
         self.deck.add_card(a_card.rank, a_card.suit, hidden)
 
     def reset_bet(self):
+        """
+        This is used to reset the bet amount of each round
+        """
         self.bet = 0
 
     def get_deck(self):
@@ -28,6 +31,9 @@ class Player():
 
 
     def place_bet(self):
+        """
+        Prompts the user to input bet amount, which decreases self.money and returns bet integer
+        """
         while True:
             bet = int(input("Please enter how much you wish to bet: "))
             if bet <= self.money:
@@ -48,6 +54,9 @@ class Player():
 
     
     def get_score(self):
+        """
+        Calculates score of a player's hand (deck) while taking account aces
+        """
         # reset the score for every count
         self.score = 0
         # reset ace count for every count
@@ -141,13 +150,16 @@ class Blackjack():
 
     
     def dealer_draw(self, blackjack_deck):
+        """
+        Makes the dealer draw cards from blackjack_deck until their score is over 17
+        """
         while self.dealer.get_score() < 17:
             self.dealer.hit(blackjack_deck.draw_card())
 
 
     def available_options(self, bet_amount, is_first_time=False):
         """
-        Basically it displays the available options the user can choose, and returns it if it allowed to
+        Basically it displays the available options that the user are allowed to choose from
         """
         options = ["hit", "stand"]
         if self.player.get_score() == 21 and is_first_time:
