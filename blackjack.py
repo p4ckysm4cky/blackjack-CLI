@@ -125,8 +125,22 @@ class Blackjack():
         self.dealer.hit(standard_deck.draw_card(), hidden=True)
 
 
-    def natural_blackjack(self):
-        pass
+    def natural_blackjack(self, bet_amount):
+        self.dealer.get_deck().hide_card(1, False)
+        if self.dealer.get_score() == 21:
+            self.display_current()
+            print("Push")
+            self.player.add_money(bet_amount)
+            print(f"You received {bet_amount} back")
+        else:
+            self.display_current()
+            print("Congrats you got a natural blackjack!")
+            pay_amount = round(bet_amount * 2.5)
+            self.player.add_money(pay_amount)
+            print(f"You received {pay_amount} (1.5 times normal!)")
+
+            
+
 
 
     def card_split(self):
@@ -163,7 +177,6 @@ class Blackjack():
         """
         options = ["hit", "stand"]
         if self.player.get_score() == 21 and is_first_time:
-            self.natural_blackjack()
             return "natural_blackjack"
         else:
             if is_first_time and self.player.get_money() >= bet_amount:
@@ -202,9 +215,10 @@ class Blackjack():
         blackjack_deck.generate_standard()
         blackjack_deck.shuffle()
 
+
         for i in range(1, self.rounds + 1):            
             is_player_not_bust = True # used to check if the dealer needs to draw cards
-            natural_blackjack = False
+            not_natural_blackjack = True
             
             print("="*30)
             print(f"Card count: {blackjack_deck.deck_length()}")
@@ -224,6 +238,11 @@ class Blackjack():
                 elif user_input == "double":
                     self.card_double()
                     break
+                elif user_input == "natural_blackjack":
+                    not_natural_blackjack = False
+                    self.natural_blackjack(bet_amount)
+                    break
+
                 else:
                     break
 
@@ -235,42 +254,46 @@ class Blackjack():
                 
                 self.display_current()
                 user_input = self.available_options(bet_amount, is_first_time=False)
-            
-            self.dealer.get_deck().hide_card(1, False)
-            if is_player_not_bust:
-                if self.dealer.get_score() < 17:
-                    print("Dealer is drawing cards...")
-                    self.dealer_draw(blackjack_deck)
-                    sleep(0.5)
+
+            # this part is messy, but basically it only runs if natural_blackjack() doesn't run
+            if not_natural_blackjack:
+                self.dealer.get_deck().hide_card(1, False)
+                if is_player_not_bust:
+                    # deals cards to dealer if their hand is below 17
+                    if self.dealer.get_score() < 17:
+                        print("Dealer is drawing cards...")
+                        self.dealer_draw(blackjack_deck)
+                        sleep(0.5)
 
 
 
-                print(f"Dealer score: {self.dealer.get_score()}")
-                self.display_current()
-                if self.dealer.get_score() > 21:
-                    print("The dealer has bust")
-                    print(f"You received {bet_amount * 2}")
-                    self.player.add_money(bet_amount * 2)
+                    print(f"Dealer score: {self.dealer.get_score()}") # prints the dealer's final score
+                    self.display_current()
+                    if self.dealer.get_score() > 21:
+                        print("The dealer has bust")
+                        print(f"You received {bet_amount * 2}")
+                        self.player.add_money(bet_amount * 2)
 
-                elif self.player.get_score() ==  self.dealer.get_score(): 
-                    print("Push!")
-                    print(f"You received {bet_amount} back")
-                    self.player.add_money(bet_amount)
-                
-                elif self.player.get_score() > self.dealer.get_score():
-                    print(f"You received {bet_amount * 2}")
-                    self.player.add_money(bet_amount * 2)
+                    elif self.player.get_score() ==  self.dealer.get_score(): 
+                        print("Push!")
+                        print(f"You received {bet_amount} back")
+                        self.player.add_money(bet_amount)
+                    
+                    elif self.player.get_score() > self.dealer.get_score():
+                        print(f"You received {bet_amount * 2}")
+                        self.player.add_money(bet_amount * 2)
 
-                elif self.player.get_score() < self.dealer.get_score():
-                    print("The dealer has a higher score")
+                    elif self.player.get_score() < self.dealer.get_score():
+                        print("The dealer has a higher score")
+                        print(f"You lost ${self.player.bet}")
+
+                elif not is_player_not_bust:
+                    self.display_current()
                     print(f"You lost ${self.player.bet}")
 
-            elif not is_player_not_bust:
-                self.display_current()
-                print(f"You lost ${self.player.bet}")
 
-
-            # reset the round
+            # reset the round - this is ran every round
+            not_natural_blackjack = True
             self.player.reset_bet()
             bet_amount = 0
             self.player.get_deck().reset_deck()
