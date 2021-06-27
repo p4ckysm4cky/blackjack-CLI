@@ -91,6 +91,7 @@ class Blackjack():
     def __init__(self, rounds):
         self.rounds = rounds
         self.player = Player(is_dealer=False)
+        self.original_amount = self.player.get_money()
         self.dealer = Player(is_dealer=True)
 
     
@@ -138,6 +139,23 @@ class Blackjack():
             pay_amount = round(bet_amount * 2.5)
             self.player.add_money(pay_amount)
             print(f"You received {pay_amount} (1.5 times normal!)")
+
+
+    def game_summary(self):
+        print("=" * 30)
+        print()
+        print(f"Original amount: ${self.original_amount}")
+        print()
+        print(f"Final amount: ${self.player.get_money()}")
+        print()
+        if self.player.get_money() > self.original_amount:
+            print(f"Congragulations! You won ${self.player.get_money() - self.original_amount}")
+        elif self.player.get_money() == self.original_amount:
+            print("You did not win any money, but you also didn't lose any :)")
+        else:
+            print(f"Unlucky! You loss ${abs(self.player.get_money() - self.original_amount)}")
+        print()
+        print("=" * 30)
 
             
 
@@ -211,7 +229,6 @@ class Blackjack():
     def main(self):
         self.start()
         blackjack_deck = Deck()
-        original_amount = self.player.get_money
         blackjack_deck.generate_standard()
         blackjack_deck.shuffle()
 
@@ -302,8 +319,10 @@ class Blackjack():
             # finishes game if the player's balance is 0
             if self.player.get_money() == 0:
                 print("You are out of money!")
+                self.game_summary()
                 return 
 
+        self.game_summary()
         return
 
 

@@ -2,7 +2,7 @@
     * push during natural blackjack - done
 * double
 * split
-* make a summary screen at the end
+* make a summary screen at the end - done
 * end game when balance is at 0 - done
 * clean up code 
 * add cards when there are less than 10~ cards left
