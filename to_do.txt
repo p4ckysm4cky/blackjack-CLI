@@ -1,8 +1,8 @@
-* deal with natural blackjack
-    * push during natural blackjack
+* deal with natural blackjack - done
+    * push during natural blackjack - done
 * double
 * split
 * make a summary screen at the end
-* end game when balance is at 0 
+* end game when balance is at 0 - done
 * clean up code 
 * add cards when there are less than 10~ cards left

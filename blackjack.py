@@ -299,6 +299,11 @@ class Blackjack():
             self.player.get_deck().reset_deck()
             self.dealer.get_deck().reset_deck()
 
+            # finishes game if the player's balance is 0
+            if self.player.get_money() == 0:
+                print("You are out of money!")
+                return 
+
         return
 
 
