@@ -1,6 +1,7 @@
 * deal with natural blackjack - done
     * push during natural blackjack - done
-* double
+* double - done
+* insurance on dealer's blackjack
 * split
 * make a summary screen at the end - done
 * end game when balance is at 0 - done

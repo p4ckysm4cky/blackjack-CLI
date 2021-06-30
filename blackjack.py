@@ -86,7 +86,7 @@ class Player():
 
 
 
-
+# This class is filled with very questionable design choices
 class Blackjack():
     def __init__(self, rounds):
         self.rounds = rounds
@@ -165,8 +165,13 @@ class Blackjack():
         pass
 
 
-    def card_double(self):
-        pass
+    def card_double(self, bet_amount, blackjack_deck):
+        """
+        This functions represents the double move - they cannot make a move afterwards
+        """
+        
+        sleep(0.5)
+        self.player.hit(blackjack_deck.draw_card())
 
 
     def display_current(self):
@@ -236,6 +241,7 @@ class Blackjack():
         for i in range(1, self.rounds + 1):            
             is_player_not_bust = True # used to check if the dealer needs to draw cards
             not_natural_blackjack = True
+            is_double = False
             
             print("="*30)
             print(f"Card count: {blackjack_deck.deck_length()}")
@@ -253,8 +259,12 @@ class Blackjack():
                 elif user_input == "split":
                     self.card_split()
                 elif user_input == "double":
-                    self.card_double()
-                    break
+                    print(f"{bet_amount} was added to your bet...")
+                    self.player.bet += bet_amount
+                    self.player.money -= bet_amount
+                    bet_amount *= 2
+                    self.card_double(bet_amount, blackjack_deck)
+                    is_double = True                    
                 elif user_input == "natural_blackjack":
                     not_natural_blackjack = False
                     self.natural_blackjack(bet_amount)
@@ -268,6 +278,10 @@ class Blackjack():
                     # this needs to do something though
                     is_player_not_bust = False
                     break
+
+                elif is_double:
+                    break
+
                 
                 self.display_current()
                 user_input = self.available_options(bet_amount, is_first_time=False)
@@ -313,6 +327,7 @@ class Blackjack():
             not_natural_blackjack = True
             self.player.reset_bet()
             bet_amount = 0
+            is_double = False
             self.player.get_deck().reset_deck()
             self.dealer.get_deck().reset_deck()
 
